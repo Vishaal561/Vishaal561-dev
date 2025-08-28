@@ -2,23 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>BookStore Ecommerce Landing</title>
+  <title>BookStore - Your Online Bookshop</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto&display=swap" rel="stylesheet">
   <style>
-    body { margin:0; font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fa;}
+    body { margin:0; font-family: 'Roboto', Arial, sans-serif; background: #f5f7fa;}
     header {
-      background: #35424a;
+      background: url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
       color: #fff;
-      padding: 30px 0 80px 0;
+      padding: 40px 0 120px 0;
       text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+      position: relative;
     }
-    header h1 { margin: 0; font-size: 3rem; }
-    header p { font-size: 1.2rem; margin-top: 10px;}
+    header:after {
+      content: "";
+      display: block;
+      position: absolute;
+      left:0; right:0; bottom:0; top:0;
+      background: rgba(53,66,74, 0.65);
+      z-index: 1;
+    }
+    header .header-content {
+      position: relative;
+      z-index: 2;
+    }
+    header h1 {
+      font-family: 'Montserrat', sans-serif; 
+      margin: 0; font-size: 3rem; letter-spacing: 2px;
+      text-shadow: 0 2px 16px rgba(60,80,140,0.12);
+    }
+    header p { font-size: 1.25rem; margin-top: 12px; }
+    .hero-banner {
+      display: flex; gap:1.5rem; justify-content: center; align-items: center; margin:20px auto 0 auto;
+      max-width:800px; z-index:2; position:relative;
+    }
+    .hero-banner img {
+      height:80px; border-radius:16px; box-shadow:0 2px 8px rgba(0,0,0,0.09);
+    }
     .search-bar {
-      margin: -40px auto 30px auto;
+      margin: -50px auto 30px auto;
       display: flex;
       justify-content: center;
+      z-index:2; position:relative;
     }
     .search-bar input {
       width: 400px;
@@ -38,11 +63,20 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-    .search-bar button:hover {
-      background: #0d4b9f;
+    .search-bar button:hover { background: #174b87; }
+    .category-bar {
+      display: flex; gap: 1rem; justify-content: center; margin-bottom: 20px;
+    }
+    .category-bar button {
+      background: #fff; border: 1px solid #1976d2; color: #1976d2;
+      padding: 8px 20px; border-radius: 8px; font-size: 1rem; cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .category-bar button.selected, .category-bar button:hover {
+      background: #1976d2; color: #fff;
     }
     .books-section {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -51,43 +85,47 @@
     }
     .book-card {
       background: #fff;
-      border-radius: 12px;
+      border-radius: 16px;
       box-shadow: 0 2px 16px rgba(60,80,140,0.09);
       padding: 20px;
       text-align: center;
       transition: box-shadow 0.2s, transform 0.2s;
       position: relative;
-      min-height: 350px;
+      min-height: 410px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       cursor: pointer;
     }
-    .book-card:active, .book-card:hover {
-      box-shadow: 0 8px 24px rgba(60,80,140,0.19);
-      transform: scale(1.03);
-    }
+    .book-card:hover { box-shadow: 0 8px 24px rgba(60,80,140,0.16); transform: scale(1.04);}
     .book-card img {
-      max-height: 140px;
+      max-height: 160px;
       object-fit: contain;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       margin-top: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      border-radius: 8px;
     }
     .book-title { font-size: 1.2rem; font-weight: bold; color: #1976d2;}
-    .book-author { color: #555; margin-bottom: 10px;}
-    .book-price { color: #2e7d32; font-size: 1.1rem; margin-bottom: 12px;}
+    .book-author { color: #555; margin-bottom: 8px;}
+    .book-price { color: #2e7d32; font-size: 1.15rem; margin-bottom: 7px;}
+    .book-rating { color: #ffa500; font-size: 1rem; margin-bottom:7px;}
+    .badge { position:absolute; top:16px; left:16px; background:#ff9800; color:#fff; border-radius:8px; padding:4px 10px; font-size:0.95rem; font-weight:bold;}
     .book-card button {
-      background: #ff9800;
+      background: #1976d2;
       padding: 10px 0;
       width: 100%;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 1rem;
       color: #fff;
       cursor: pointer;
+      margin-top: 8px;
+      margin-bottom: 2px;
       transition: background 0.2s;
     }
-    .book-card button:hover { background: #e67500; }
+    .book-card button:hover { background: #174b87; }
+    .book-reviews-link { text-decoration:underline; color:#888; font-size:0.95rem; cursor:pointer;}
     .cart-btn {
       position: fixed;
       top: 24px;
@@ -107,15 +145,8 @@
       box-shadow: 0 2px 12px rgba(25,118,210,0.16);
       transition: transform 0.2s;
     }
-    .cart-btn.bounce {
-      animation: bounce 0.4s;
-    }
-    @keyframes bounce {
-      0% { transform: scale(1); }
-      30% { transform: scale(1.25); }
-      60% { transform: scale(0.95); }
-      100% { transform: scale(1); }
-    }
+    .cart-btn.bounce { animation: bounce 0.4s;}
+    @keyframes bounce { 0% { transform: scale(1); } 30% { transform: scale(1.25); } 60% { transform: scale(0.95); } 100% { transform: scale(1); } }
     .cart-count {
       position: absolute;
       top: 10px;
@@ -127,135 +158,68 @@
       padding: 3px 8px;
       font-weight: bold;
     }
-    /* Modals */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right:0; bottom:0;
-      background: rgba(0,0,0,0.24);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .modal.visible {
-      display: flex;
-      opacity: 1;
-      animation: fadeIn 0.3s;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    .modal-content {
-      background: #fff;
-      padding: 32px 26px;
-      border-radius: 16px;
-      min-width: 320px;
-      max-width: 90vw;
-      box-shadow: 0 2px 24px rgba(60,80,140,0.19);
-      animation: slideUp 0.3s;
-    }
-    @keyframes slideUp {
-      from { transform: translateY(40px); }
-      to { transform: translateY(0); }
-    }
-    .modal-close {
-      background: #d32f2f;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 16px;
-      font-size: 1rem;
-      cursor: pointer;
-      float: right;
-      margin-top: 12px;
-    }
-    /* Book Detail Modal */
-    .book-detail-image {
-      max-width: 160px;
-      margin-bottom: 18px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
+    /* Modals, Reviews, etc. */
+    .modal { display: none; position: fixed; top: 0; left: 0; right:0; bottom:0; background: rgba(0,0,0,0.24); z-index: 1000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;}
+    .modal.visible { display: flex; opacity: 1; animation: fadeIn 0.3s;}
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal-content { background: #fff; padding: 32px 26px; border-radius: 16px; min-width: 320px; max-width: 90vw; box-shadow: 0 2px 24px rgba(60,80,140,0.19); animation: slideUp 0.3s;}
+    @keyframes slideUp { from { transform: translateY(40px); } to { transform: translateY(0); } }
+    .modal-close { background: #d32f2f; color: #fff; border: none; border-radius: 6px; padding: 6px 16px; font-size: 1rem; cursor: pointer; float: right; margin-top: 12px;}
+    .book-detail-image { max-width: 160px; margin-bottom: 18px; display: block; margin-left: auto; margin-right: auto;}
     .book-detail-title { font-size: 1.4rem; font-weight: bold; color: #1976d2; margin: 0;}
     .book-detail-author { color: #555; margin-bottom: 10px;}
     .book-detail-desc { color: #333; font-size: 1rem; margin-bottom: 12px;}
     .book-detail-price { color: #2e7d32; font-size: 1.2rem; }
-    .quantity-input {
-      width: 60px;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-      margin-right: 8px;
-      text-align: center;
-    }
-    .add-cart-detail-btn {
-      background: #ff9800;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 10px 24px;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 16px;
-      transition: background 0.2s;
-    }
-    .add-cart-detail-btn:hover {
-      background: #e67500;
-    }
+    .quantity-input { width: 60px; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 1rem; margin-right: 8px; text-align: center;}
+    .add-cart-detail-btn { background: #1976d2; color: #fff; border: none; border-radius: 6px; padding: 10px 24px; font-size: 1rem; cursor: pointer; margin-top: 16px; transition: background 0.2s;}
+    .add-cart-detail-btn:hover { background: #174b87;}
     /* Cart Modal */
     .cart-items { margin-bottom: 24px; }
-    .cart-item {
-      display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid #eee; padding: 10px 0;
-    }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 10px 0;}
     .cart-item-title { font-weight: bold; }
-    .cart-item-remove {
-      background: none; border: none; color: #d32f2f; font-size: 1.1rem; cursor: pointer;
-    }
-    .cart-item-qty {
-      padding: 2px 8px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      margin: 0 10px;
-      width: 36px;
-      text-align: center;
-    }
-    .checkout-btn {
-      background: #1976d2;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 10px 24px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    /* Checkout Modal */
-    .checkout-summary { font-size: 1.15rem; margin-bottom: 16px; }
-    .checkout-success { color: #2e7d32; font-weight: bold; margin-top: 18px;}
+    .cart-item-remove { background: none; border: none; color: #d32f2f; font-size: 1.1rem; cursor: pointer;}
+    .cart-item-qty { padding: 2px 8px; border-radius: 4px; border: 1px solid #ccc; margin: 0 10px; width: 36px; text-align: center;}
+    .checkout-btn { background: #1976d2; color: #fff; border: none; border-radius: 6px; padding: 10px 24px; font-size: 1rem; cursor: pointer;}
+    /* Login Modal */
+    .login-modal input { width: 90%; padding: 8px; margin-bottom: 12px;}
+    .login-modal button { background: #1976d2; color: #fff; padding: 8px 20px; border:none; border-radius: 8px; cursor:pointer;}
+    .login-status { position:fixed; bottom:24px; right:24px; background:#fff; border-radius:8px; padding:8px 16px; font-size:1rem; box-shadow:0 2px 12px rgba(0,0,0,0.11);}
+    /* Reviews */
+    .book-reviews { margin-top:18px;}
+    .review { margin-bottom:12px;}
+    .review-rating { color: #ffa500; }
+    .review-author { color: #1976d2; font-weight:bold;}
     @media (max-width: 600px) {
       .books-section { grid-template-columns: 1fr; }
       .search-bar input { width: 60vw;}
+      .hero-banner img { height:56px;}
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>BookStore</h1>
-    <p>Find your next great read. Browse, search, and shop for books you love!</p>
+    <div class="header-content">
+      <h1>BookStore</h1>
+      <p>Discover, search and buy your favorite books. Now with reviews and ratings!</p>
+      <div class="hero-banner">
+        <img src="https://covers.openlibrary.org/b/id/10589958-L.jpg" alt="Atomic Habits">
+        <img src="https://covers.openlibrary.org/b/id/8019505-L.jpg" alt="Deep Work">
+        <img src="https://covers.openlibrary.org/b/id/8275261-L.jpg" alt="The Alchemist">
+        <img src="https://covers.openlibrary.org/b/id/8371261-L.jpg" alt="Zero to One">
+      </div>
+    </div>
   </header>
   <div class="search-bar">
     <input id="searchInput" type="text" placeholder="Search by title or author..." />
     <button onclick="searchBooks()">Search</button>
   </div>
+  <div class="category-bar" id="categoryBar"></div>
   <button class="cart-btn" id="cartBtn" onclick="showCart()">
     🛒
     <span class="cart-count" id="cartCount">0</span>
   </button>
+  <button style="position:fixed;top:24px;left:24px;background:#fff;color:#1976d2;border-radius:8px;padding:8px;font-weight:bold;z-index:999;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.09);cursor:pointer;" onclick="showLogin()">Login</button>
+  <div class="login-status" id="loginStatus" style="display:none;"></div>
   <main>
     <section class="books-section" id="booksSection"></section>
     <!-- Book Detail Modal -->
@@ -279,60 +243,120 @@
         <button class="modal-close" onclick="closeCheckout()">Close</button>
       </div>
     </div>
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+      <div class="modal-content login-modal">
+        <h2>Login</h2>
+        <input type="text" id="loginUser" placeholder="Username">
+        <input type="password" id="loginPass" placeholder="Password">
+        <button onclick="doLogin()">Login</button>
+        <button class="modal-close" onclick="closeLogin()">Close</button>
+      </div>
+    </div>
+    <!-- Reviews Modal -->
+    <div class="modal" id="reviewsModal">
+      <div class="modal-content" id="reviewsContent"></div>
+    </div>
   </main>
   <script>
-    // Simulated backend/API fetch (replace with real API endpoint if needed)
-    async function fetchBooksFromAPI() {
-      // Simulate network latency
-      await new Promise(res => setTimeout(res, 400));
-      // Return sample data
-      return [
-        {
-          id: 1,
-          title: "Atomic Habits",
-          author: "James Clear",
-          price: 9.99,
-          image: "https://covers.openlibrary.org/b/id/10589958-L.jpg",
-          description: "A proven framework for improving habits every day."
-        },
-        {
-          id: 2,
-          title: "The Lean Startup",
-          author: "Eric Ries",
-          price: 11.50,
-          image: "https://covers.openlibrary.org/b/id/6979861-L.jpg",
-          description: "How today's entrepreneurs use continuous innovation to create radically successful businesses."
-        },
-        {
-          id: 3,
-          title: "Deep Work",
-          author: "Cal Newport",
-          price: 13.00,
-          image: "https://covers.openlibrary.org/b/id/8019505-L.jpg",
-          description: "Rules for focused success in a distracted world."
-        },
-        {
-          id: 4,
-          title: "Zero to One",
-          author: "Peter Thiel",
-          price: 10.00,
-          image: "https://covers.openlibrary.org/b/id/8371261-L.jpg",
-          description: "Notes on startups, or how to build the future."
-        },
-        {
-          id: 5,
-          title: "The Alchemist",
-          author: "Paulo Coelho",
-          price: 8.00,
-          image: "https://covers.openlibrary.org/b/id/8275261-L.jpg",
-          description: "A journey of self-discovery and destiny."
-        }
-      ];
-    }
+    // Simulated backend endpoints (replace with real API calls for a real backend)
+    // A real backend is recommended for production. You can use Express or JSON Server.
+    const API = {
+      async getBooks() {
+        // Simulate categories, ratings, and bestseller status
+        return [
+          {
+            id: 1,
+            title: "Atomic Habits",
+            author: "James Clear",
+            price: 9.99,
+            image: "https://covers.openlibrary.org/b/id/10589958-L.jpg",
+            description: "A proven framework for improving habits every day.",
+            category: "Self-help",
+            rating: 4.8,
+            bestseller: true,
+            reviews: [
+              {author:"Sam", rating:5, text:"Life changing!"},
+              {author:"Kim", rating:4, text:"Very practical advice."}
+            ]
+          },
+          {
+            id: 2,
+            title: "The Lean Startup",
+            author: "Eric Ries",
+            price: 11.50,
+            image: "https://covers.openlibrary.org/b/id/6979861-L.jpg",
+            description: "How entrepreneurs use continuous innovation.",
+            category: "Business",
+            rating: 4.5,
+            bestseller: false,
+            reviews: [
+              {author:"Alex", rating:5, text:"A must read for startups!"},
+              {author:"Jordan", rating:4, text:"Interesting concepts."}
+            ]
+          },
+          {
+            id: 3,
+            title: "Deep Work",
+            author: "Cal Newport",
+            price: 13.00,
+            image: "https://covers.openlibrary.org/b/id/8019505-L.jpg",
+            description: "Rules for focused success in a distracted world.",
+            category: "Productivity",
+            rating: 4.7,
+            bestseller: true,
+            reviews: [
+              {author:"Morgan", rating:5, text:"Absolutely loved it."}
+            ]
+          },
+          {
+            id: 4,
+            title: "Zero to One",
+            author: "Peter Thiel",
+            price: 10.00,
+            image: "https://covers.openlibrary.org/b/id/8371261-L.jpg",
+            description: "Notes on startups, or how to build the future.",
+            category: "Business",
+            rating: 4.3,
+            bestseller: true,
+            reviews: [
+              {author:"Eli", rating:4, text:"Good for entrepreneurs."}
+            ]
+          },
+          {
+            id: 5,
+            title: "The Alchemist",
+            author: "Paulo Coelho",
+            price: 8.00,
+            image: "https://covers.openlibrary.org/b/id/8275261-L.jpg",
+            description: "A journey of self-discovery and destiny.",
+            category: "Fiction",
+            rating: 4.6,
+            bestseller: false,
+            reviews: [
+              {author:"Ravi", rating:5, text:"Beautifully written!"},
+              {author:"Priya", rating:4, text:"Very inspirational."}
+            ]
+          }
+        ];
+      },
+      async login(user, pass) {
+        await new Promise(r=>setTimeout(r,300));
+        if(user==='demo' && pass==='password') return {success:true, username:user};
+        return {success:false, error:"Invalid credentials"};
+      },
+      async checkout(cart, username) {
+        await new Promise(r=>setTimeout(r,300));
+        return {success:true, orderId:'ORD' + Math.floor(Math.random()*100000)};
+      }
+    };
 
     let books = [];
     let filteredBooks = [];
     let cart = [];
+    let categories = [];
+    let selectedCategory = 'All';
+    let username = null;
 
     function animateCartBounce() {
       const btn = document.getElementById('cartBtn');
@@ -348,24 +372,42 @@
         card.className = 'book-card';
         card.onclick = () => showBookDetail(book.id);
         card.innerHTML = `
+          ${book.bestseller?'<span class="badge">Bestseller</span>':''}
           <img src="${book.image}" alt="${book.title}">
           <div class="book-title">${book.title}</div>
           <div class="book-author">by ${book.author}</div>
+          <div class="book-rating">${'★'.repeat(Math.round(book.rating))} <span style="color:#888;">(${book.rating.toFixed(1)})</span></div>
           <div class="book-price">$${book.price.toFixed(2)}</div>
           <button onclick="event.stopPropagation(); showBookDetail(${book.id});">View Details</button>
+          <div class="book-reviews-link" onclick="event.stopPropagation(); showReviews(${book.id});">View Reviews (${book.reviews.length})</div>
         `;
         section.appendChild(card);
       });
     }
 
-    function searchBooks() {
+    function renderCategories() {
+      categories = ['All', ...[...new Set(books.map(b=>b.category))]];
+      const bar = document.getElementById('categoryBar');
+      bar.innerHTML = '';
+      categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.innerText = cat;
+        btn.className = cat===selectedCategory?'selected':'';
+        btn.onclick = () => { selectedCategory=cat; filterBooks(); };
+        bar.appendChild(btn);
+      });
+    }
+
+    function filterBooks() {
       const val = document.getElementById('searchInput').value.toLowerCase();
-      filteredBooks = books.filter(book =>
-        book.title.toLowerCase().includes(val) ||
-        book.author.toLowerCase().includes(val)
+      filteredBooks = books.filter(book => 
+        (selectedCategory==='All'||book.category===selectedCategory) &&
+        (book.title.toLowerCase().includes(val) || book.author.toLowerCase().includes(val))
       );
       renderBooks();
     }
+
+    function searchBooks() { filterBooks(); }
 
     function showBookDetail(id) {
       const book = books.find(b => b.id === id);
@@ -448,7 +490,7 @@
       renderCart();
     }
 
-    function checkoutCart() {
+    async function checkoutCart() {
       if(cart.length === 0) return;
       closeCart();
       let total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
@@ -458,8 +500,10 @@
       });
       summary += `</ul>
         <div style="font-weight:bold; margin-top:10px;">Total: $${total.toFixed(2)}</div>
-        <div class="checkout-success">Order placed successfully! (Simulated)</div>
       `;
+      // Simulate API checkout
+      let res = await API.checkout(cart, username);
+      if(res.success) summary += `<div class="checkout-success">Order placed! Your order ID: <b>${res.orderId}</b></div>`;
       document.getElementById('checkoutSummary').innerHTML = summary;
       document.getElementById('checkoutModal').classList.add('visible');
       cart = [];
@@ -471,17 +515,59 @@
       renderBooks();
     }
 
+    function showLogin() {
+      document.getElementById('loginModal').classList.add('visible');
+    }
+    function closeLogin() {
+      document.getElementById('loginModal').classList.remove('visible');
+    }
+    async function doLogin() {
+      let user = document.getElementById('loginUser').value;
+      let pass = document.getElementById('loginPass').value;
+      let res = await API.login(user, pass);
+      if(res.success) {
+        username = res.username;
+        document.getElementById('loginStatus').innerText = "Logged in as: " + username;
+        document.getElementById('loginStatus').style.display = "block";
+        closeLogin();
+      } else {
+        alert(res.error);
+      }
+    }
+
+    function showReviews(bookId) {
+      const book = books.find(b => b.id === bookId);
+      const modal = document.getElementById('reviewsModal');
+      const content = document.getElementById('reviewsContent');
+      let html = `<h3>Reviews for ${book.title}</h3>`;
+      if(book.reviews.length===0) html += "<p>No reviews yet.</p>";
+      else {
+        book.reviews.forEach(r=>{
+          html += `<div class="review">
+            <span class="review-rating">${'★'.repeat(r.rating)}</span>
+            <span class="review-author">${r.author}:</span>
+            <span class="review-text">${r.text}</span>
+          </div>`;
+        });
+      }
+      html += `<button class="modal-close" onclick="closeReviews()">Close</button>`;
+      content.innerHTML = html;
+      modal.classList.add('visible');
+    }
+    function closeReviews() { document.getElementById('reviewsModal').classList.remove('visible'); }
+
     // Initial load
     async function pageInit() {
-      books = await fetchBooksFromAPI();
+      books = await API.getBooks();
       filteredBooks = [...books];
       renderBooks();
+      renderCategories();
     }
     pageInit();
 
     // Click outside modal to close
     window.onclick = function(event) {
-      ['bookDetailModal', 'cartModal', 'checkoutModal'].forEach(id => {
+      ['bookDetailModal', 'cartModal', 'checkoutModal','loginModal','reviewsModal'].forEach(id => {
         const modal = document.getElementById(id);
         if (modal.classList.contains('visible') && event.target === modal) {
           modal.classList.remove('visible');
